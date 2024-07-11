@@ -5,9 +5,20 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+
+  const { data: owner } = useScaffoldReadContract({
+    contractName: "YourContract",
+    functionName: "owner",
+  });
+
+  const { data: delegate } = useScaffoldReadContract({
+    contractName: "YourContract",
+    functionName: "delegate",
+  });
 
   return (
     <>
@@ -20,6 +31,14 @@ const Home: NextPage = () => {
           <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
             <p className="my-2 font-medium">Connected Address:</p>
             <Address address={connectedAddress} />
+          </div>
+          <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
+            <p className="my-2 font-medium">Owner Address:</p>
+            <Address address={owner} />
+          </div>
+          <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
+            <p className="my-2 font-medium">Delegate Address:</p>
+            <Address address={delegate} />
           </div>
           <p className="text-center text-lg">
             Get started by editing{" "}
